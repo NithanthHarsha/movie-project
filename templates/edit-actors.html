@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Edit Actor – {{ actor.name }}{% endblock %}
+
+
+
+{% block content %}
+
+<div class="edit-actor-page">
+    <div class="edit-actor-container">
+
+        <h2 class="edit-actor-title">Edit Actor</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="edit-actor-field">
+                <label>Name</label>
+                <input type="text" name="name" value="{{ actor.name }}" required>
+            </div>
+
+            <div class="edit-actor-field">
+                <label>Date of Birth</label>
+                <input type="date" name="date_of_birth" value="{{ actor.date_of_birth|date:'Y-m-d' }}">
+            </div>
+
+            
+
+            <div class="edit-actor-field">
+                <label>Bio</label>
+                <textarea name="bio">{{ actor.bio }}</textarea>
+            </div>
+
+            <div class="edit-actor-field">
+                <label>Current Photo</label>
+                <div class="current-actor-photo">
+                    {% if actor.photo %}
+                        <img src="{{ actor.photo.url }}" alt="{{ actor.name }}">
+                    {% else %}
+                        <div style="width:200px;height:300px;background:#222;display:flex;align-items:center;justify-content:center;font-size:5rem;color:#555;border-radius:16px;">
+                            🎭
+                        </div>
+                    {% endif %}
+                </div>
+                <input type="file" name="photo" accept="image/*">
+                <small style="color:#999;display:block;margin-top:8px;">Leave empty to keep current photo</small>
+            </div>
+
+            <button type="submit" class="update-actor-btn">Update Actor</button>
+        </form>
+
+        <a href="{% url 'actors_list' %}" class="back-to-actors">← Back to Actors</a>
+
+    </div>
+</div>
+
+{% endblock %}

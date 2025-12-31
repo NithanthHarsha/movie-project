@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}My Account – Cinematic Noir{% endblock %}
+
+{% block content %}
+
+<div class="profile-page">
+    <div class="profile-container">
+
+        <div class="profile-header">
+            <h2 class="profile-title">My Account</h2>
+
+            {% if request.user.userprofile.profile_pic %}
+                <img src="{{ request.user.userprofile.profile_pic.url }}" alt="Profile picture" class="profile-pic">
+            {% else %}
+                <div class="no-pic">👤</div>
+            {% endif %}
+        </div>
+
+        <div class="profile-info">
+            <p><strong>Username:</strong> {{ request.user.username }}</p>
+            <p><strong>Email:</strong> {{ request.user.email }}</p>
+            <p><strong>Name:</strong> {{ request.user.first_name }} {{ request.user.last_name }}</p>
+        </div>
+
+        <div class="profile-actions">
+            <a href="{% url 'edit_profile' %}">Edit Profile</a>
+            <a href="{% url 'change_password' %}">Change Password</a>
+        </div>
+
+        <h3 class="movies-title">My Movies</h3>
+
+        <ul class="movies-list">
+            {% for movie in movies %}
+                <li>{{ movie.name }}</li>
+            {% empty %}
+                <li class="empty-movies">No movies added yet</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+</div>
+
+{% endblock %}

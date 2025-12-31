@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<div class="container">
+  <header class="page-header">
+    <h1 class="page-title">Cinematic Collection</h1>
+    <p class="page-subtitle">A timeless archive of films that define cinema</p>
+  </header>
+  
+  {% if not movies %}
+    <div class="empty-state">
+      <p class="no-movies">No films in the collection yet. Start adding your favorites!</p>
+    </div>
+  {% else %}
+    <div class="movies-grid">
+      {% for movie in movies %}
+        <article class="movie-card">
+          <div class="card-image-wrapper">
+            <a href="{% url 'movie_details' movie.id %}" class="image-link">
+              <img src="{{ movie.cover.url }}" alt="{{ movie.name }}" loading="lazy">
+              <div class="image-overlay">
+                <span class="play-icon">▶</span>
+              </div>
+            </a>
+          </div>
+          <div class="card-content">
+            <h2 class="movie-title">
+              <a href="{% url 'movie_details' movie.id %}">{{ movie.name }}</a>
+            </h2>
+            <div class="movie-meta">
+              <span class="movie-year">{{ movie.year }}</span>
+              
+            </div>
+            <p class="movie-tagline">
+              <!-- Placeholder for a tagline; add to model if desired -->
+              
+            </p>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

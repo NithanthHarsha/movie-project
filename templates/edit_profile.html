@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Edit Profile{% endblock %}
+
+
+{% block content %}
+
+<div class="edit-profile-page">
+    <div class="edit-profile-container">
+
+        <h2 class="edit-profile-title">Edit Profile</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="edit-profile-field">
+                <label>First Name</label>
+                <input type="text" name="first_name" value="{{ request.user.first_name }}" required>
+            </div>
+
+            <div class="edit-profile-field">
+                <label>Last Name</label>
+                <input type="text" name="last_name" value="{{ request.user.last_name }}" required>
+            </div>
+
+
+            <div class="edit-profile-field">
+                <label>User Name</label>
+                <input type="text" name="username" value="{{ request.user.username }}">
+
+            </div> 
+
+            <div class="edit-profile-field">
+                <label>Email</label>
+                <input type="email" name="email" value="{{ request.user.email }}" required>
+            </div>
+
+            <div class="edit-profile-field">
+                <label>Profile Picture</label>
+                <div class="current-profile-pic">
+                    {% if request.user.userprofile.profile_pic %}
+                        <img src="{{ request.user.userprofile.profile_pic.url }}" alt="Current profile picture">
+                    {% else %}
+                        <div style="width:160px;height:160px;border-radius:50%;background:#222;display:flex;align-items:center;justify-content:center;font-size:4rem;color:#555;border:4px solid #444;">
+                            👤
+                        </div>
+                    {% endif %}
+                </div>
+                <input type="file" name="profile_pic" accept="image/*">
+                <small style="color:#999; display:block; margin-top:8px;">Leave empty to keep current picture</small>
+            </div>
+
+            <button type="submit" class="save-profile-btn">Save Changes</button>
+        </form>
+
+        <a href="{% url 'profile' %}" class="back-to-profile">← Back to Profile</a>
+
+    </div>
+</div>
+
+{% endblock %}

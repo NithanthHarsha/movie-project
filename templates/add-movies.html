@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Add Movie{% endblock %}
+{% block content %}
+<div class="add-form-wrapper">
+  <div class="add-form-main">
+    <header class="add-form-header">
+      <h1 class="add-form-title">Add a New Film</h1>
+      <p class="add-form-subtitle">Contribute to your cinematic archive</p>
+    </header>
+
+    <form method="POST" enctype="multipart/form-data" class="add-form">
+      {% csrf_token %}
+
+      <div class="add-form-section">
+        <div class="add-field-group">
+          <label for="id_name" class="add-field-label">Movie Name</label>
+          <input type="text" name="name" id="id_name" required class="add-field-input">
+        </div>
+
+        <div class="add-field-group">
+          <label for="id_year" class="add-field-label">Release Year</label>
+          <input type="number" name="year" id="id_year" required class="add-field-input">
+        </div>
+
+        <div class="add-field-group">
+          <label for="id_genre" class="add-field-label">Category</label>
+          <input type="text" name="genre" id="id_genre" required class="add-field-input">
+        </div>
+      </div>
+
+      <div class="add-form-section">
+        <div class="add-field-group full-width">
+          <label for="id_description" class="add-field-label">Movie Description</label>
+          <textarea name="description" id="id_description" rows="6" required class="add-field-textarea"></textarea>
+        </div>
+      </div>
+
+      <div class="add-form-section">
+        <div class="add-field-group">
+          <label for="id_trailer" class="add-field-label">Trailer Link (YouTube)</label>
+          <input type="url" name="trailer" id="id_trailer" class="add-field-input">
+        </div>
+      </div>
+
+      <div class="add-form-section">
+        <div class="add-field-group full-width">
+          <label for="id_cover" class="add-field-label">Movie Cover Image</label>
+          <input type="file" name="cover" id="id_cover" accept="image/*" required class="add-field-file">
+          <small class="add-field-hint">Upload a high-quality poster image (JPG, PNG)</small>
+        </div>
+      </div>
+
+      <div class="add-form-actions">
+        <button type="submit" class="action-button primary">Add Movie</button>
+        <a href="{% url 'home' %}" class="action-button secondary">← Back to Collection</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Login{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/login_bw.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="login-page">
+    <div class="login-container">
+
+        <h1 class="login-title">Welcome Back</h1>
+        
+
+        {% if messages %}
+            <div class="login-messages">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="login-field">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" required autofocus>
+            </div>
+
+            <div class="login-field">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+
+            <button type="submit" class="login-submit">LOGIN</button>
+        </form>
+
+        <div class="register-prompt">
+            New here? <a href="{% url 'register' %}">Create an account</a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

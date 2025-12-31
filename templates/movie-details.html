@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}{{ movie.name }}{% endblock %}
+
+{% block content %}
+
+<div class="film-details-layout">
+  <div class="film-details-core">
+
+    <!-- HEADER WITH TITLE AND POSTER -->
+    <header class="film-header-area">
+      <h1 class="film-primary-title">{{ movie.name }}</h1>
+      {% if movie.cover %}
+        <div class="header-image-area">
+          <img src="{{ movie.cover.url }}" alt="{{ movie.name }} poster" class="header-image">
+        </div>
+      {% endif %}
+    </header>
+
+    <!-- BASIC DETAILS SECTION -->
+    <section class="film-essentials">
+      <div class="essentials-overview">
+        <div class="detail-pair">
+          <span class="detail-key">Year</span>
+          <span class="detail-data">{{ movie.year }}</span>
+        </div>
+        <div class="detail-pair">
+          <span class="detail-key">Genre</span>
+          <span class="detail-data">{{ movie.genre }}</span>
+        </div>
+      </div>
+
+      <div class="summary-area">
+        <h3 class="summary-heading">Synopsis</h3>
+        <p class="summary-text">{{ movie.description|linebreaks }}</p>
+      </div>
+
+      {% if movie.trailer %}
+        <div class="preview-area">
+          <h3 class="preview-heading">Trailer</h3>
+          <div class="video-container">
+            <iframe width="100%" height="400"
+              src="https://www.youtube.com/embed/{{ movie.trailer|cut:'https://youtu.be/'|cut:'https://www.youtube.com/watch?v=' }}"
+              frameborder="0" allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      {% endif %}
+    </section>
+
+    <!-- CAST WITH HOVER -->
+    <section class="film-cast-area">
+      <h2 class="cast-heading">Cast</h2>
+      {% if cast %}
+        <ul class="cast-roster">
+          {% for c in cast %}
+            <li class="cast-entry">
+              <a href="{% url 'person_details' c.person.id %}" class="cast-person-link">
+                {{ c.person.name }}
+              </a>
+              {% if c.character_name %}
+                <span class="role-highlight"> as <strong>{{ c.character_name }}</strong></span>
+              {% endif %}
+              <!-- HOVER OVERLAY -->
+              <div class="person-preview-overlay">
+                {% if c.person.photo %}
+                  <img src="{{ c.person.photo.url }}" alt="{{ c.person.name }}" class="preview-headshot">
+                {% endif %}
+                <h4 class="preview-name">{{ c.person.name }}</h4>
+                {% if c.person.bio %}
+                  <p class="preview-snippet">{{ c.person.bio|truncatewords:20 }}</p>
+                {% endif %}
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="empty-cast-note">No cast added.</p>
+      {% endif %}
+    </section>
+
+    <!-- CREW SECTIONS -->
+    <section class="film-directors-area">
+      <h3 class="directors-heading">Director</h3>
+      {% for d in directors %}
+        <p class="crew-member">
+          <a href="{% url 'person_details' d.person.id %}" class="crew-person-link">
+            {{ d.person.name }}
+          </a>
+        </p>
+      {% empty %}
+        <p class="empty-crew-note">No directors added.</p>
+      {% endfor %}
+    </section>
+
+    <section class="film-writers-area">
+      <h3 class="writers-heading">Writer</h3>
+      {% for w in writers %}
+        <p class="crew-member">
+          <a href="{% url 'person_details' w.person.id %}" class="crew-person-link">
+            {{ w.person.name }}
+          </a>
+        </p>
+      {% empty %}
+        <p class="empty-crew-note">No writers added.</p>
+      {% endfor %}
+    </section>
+
+    <section class="film-producers-area">
+      <h3 class="producers-heading">Producer</h3>
+      {% for p in producers %}
+        <p class="crew-member">
+          <a href="{% url 'person_details' p.person.id %}" class="crew-person-link">
+            {{ p.person.name }}
+          </a>
+        </p>
+      {% empty %}
+        <p class="empty-crew-note">No producers added.</p>
+      {% endfor %}
+    </section>
+
+    <!-- CONTROLS -->
+    <footer class="film-controls">
+      <a href="{% url 'home' %}" class="control-link primary">← Back to Collection</a>
+      {% if request.user.is_superuser %}
+        <a href="{% url 'edit_movie' movie.id %}" class="control-link secondary">Edit Movie</a>
+        <a href="{% url 'delete_movie' movie.id %}" class="control-link danger"
+           onclick="return confirm('Delete {{ movie.name }} permanently?');">Delete</a>
+      {% endif %}
+    </footer>
+
+  </div>
+</div>
+
+{% endblock %}

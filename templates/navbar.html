@@ -1,0 +1,118 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+
+    <a class="navbar-brand" href="{% url 'home' %}">MovieSite</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        <!-- Home -->
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page"
+             href="{% url 'home' %}">
+            Home
+          </a>
+        </li>
+
+        <!-- Add Movies -->
+         {% if request.user.is_superuser %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'add_movie' %}">
+            Add Movies
+          </a>
+        </li>
+        {% endif %}
+        <!-- Add Actors -->
+
+        {% if request.user.is_superuser %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'add_actors' %}">Add Actor</a>
+        </li>
+        {% endif %}
+
+
+        <li class="nav-item">
+           <a class="nav-link" href="{% url 'actors_list' %}"> Actors</a>
+        </li>
+
+
+        <!-- Account Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle d-flex align-items-center gap-2"
+             href="#"
+             role="button"
+             data-bs-toggle="dropdown">
+
+            {% if request.user.is_authenticated %}
+                {% if request.user.userprofile.profile_pic %}
+                    <img src="{{ request.user.userprofile.profile_pic.url }}"
+                         width="32" height="32"
+                         class="rounded-circle">
+                {% else %}
+                    <img src="{% static 'images/default-user.png' %}"
+                         width="32" height="32"
+                         class="rounded-circle">
+                {% endif %}
+                Welcome {{ request.user.first_name|default:request.user.username }}
+            {% else %}
+                Account
+            {% endif %}
+          </a>
+
+          <ul class="dropdown-menu">
+            {% if request.user.is_authenticated %}
+              <li>
+                <a class="dropdown-item" href="{% url 'profile' %}">
+                  My Account
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{% url 'logout' %}">
+                  Logout
+                </a>
+              </li>
+            {% else %}
+              <li>
+                <a class="dropdown-item" href="{% url 'login_user' %}">
+                  Login
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="{% url 'register' %}">
+                  Register
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </li>
+
+      </ul>
+
+      <!-- Search -->
+      <form method="GET" class="d-flex" role="search">
+        <input class="form-control me-2"
+               name="q"
+               type="search"
+               placeholder="Search movies..."
+               value="{{ query }}"
+               aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">
+          Search
+        </button>
+      </form>
+
+    </div>
+  </div>
+</nav>

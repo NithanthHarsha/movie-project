@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Actors List{% endblock %}
+{% block content %}
+
+<div class="actors-page-wrapper">
+  <header class="actors-page-header">
+    <h1 class="actors-page-title">Actors</h1>
+    <p class="actors-page-subtitle">Stars of the silver screen in your collection</p>
+  </header>
+
+  <section class="actors-collection">
+    <div class="actors-display-grid">
+      {% for actor in actors %}
+        <article class="actor-profile-card">
+          <a href="{% url 'actor_details' actor.id %}" class="profile-link">
+            {% if actor.photo %}
+              <div class="profile-image-container">
+                <img src="{{ actor.photo.url }}" alt="{{ actor.name }} headshot" class="profile-image" loading="lazy">
+              </div>
+            {% else %}
+              <div class="profile-image-placeholder">
+                <span class="placeholder-icon">👤</span>
+              </div>
+            {% endif %}
+            <div class="profile-info">
+              <h3 class="profile-name">{{ actor.name }}</h3>
+            </div>
+          </a>
+        </article>
+      {% empty %}
+        <p class="no-actors-message">No actors added to the collection yet.</p>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+
+{% endblock %}

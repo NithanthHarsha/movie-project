@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ person.name }}{% endblock %}
+
+{% block content %}
+<div class="profile-overview-container">
+  <div class="profile-overview-core">
+
+    <!-- PROFILE HEADER -->
+    <header class="profile-top-section">
+      <h1 class="profile-primary-heading">{{ person.name }}</h1>
+      {% if person.photo %}
+        <div class="profile-image-zone">
+          <img src="{{ person.photo.url }}" alt="{{ person.name }} headshot" class="profile-main-image">
+        </div>
+      {% endif %}
+    </header>
+
+    <!-- BASIC PROFILE INFO -->
+    <section class="profile-basics-panel">
+      {% if person.date_of_birth %}
+        <div class="basic-detail-row">
+          <span class="basic-detail-label">Date of Birth</span>
+          <span class="basic-detail-info">{{ person.date_of_birth }}</span>
+        </div>
+      {% endif %}
+    </section>
+
+    <!-- BIO SECTION -->
+    {% if person.bio %}
+      <section class="profile-story-section">
+        <h2 class="story-subheading">Biography</h2>
+        <div class="story-text-block">
+          {{ person.bio|linebreaks }}
+        </div>
+      </section>
+    {% endif %}
+
+    <!-- FILMOGRAPHY -->
+    <section class="profile-works-section">
+      <h2 class="works-subheading">Filmography</h2>
+      {% if credits %}
+        <ul class="works-catalog">
+          {% for c in credits %}
+            <li class="work-entry">
+              <a href="{% url 'movie_details' c.movie.id %}" class="work-title-link">
+                {{ c.movie.name }}
+              </a>
+              <span class="work-role-desc"> — {{ c.role }}</span>
+              {% if c.character_name %}
+                <span class="work-char-note"> ({{ c.character_name }})</span>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="no-works-message">No movies linked.</p>
+      {% endif %}
+    </section>
+
+    <!-- NAVIGATION -->
+    <footer class="profile-nav-footer">
+      <a href="{% url 'home' %}" class="nav-action primary">← Back to Home</a>
+    </footer>
+
+  </div>
+</div>
+{% endblock %}

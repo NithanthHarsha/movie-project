@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Add Actor{% endblock %}
+
+{% block content %}
+<div class="person-add-wrapper">
+  <div class="person-add-main">
+    <header class="person-add-header">
+      <h1 class="person-add-title">Add Actor</h1>
+      <p class="person-add-subtitle">Introduce a new star to your cinematic archive</p>
+    </header>
+
+    <form method="POST" enctype="multipart/form-data" class="person-add-form">
+      {% csrf_token %}
+
+      <div class="person-add-section">
+        <div class="person-field-group">
+          <label for="id_name" class="person-field-label">Name</label>
+          <input type="text" name="name" id="id_name" required class="person-field-input">
+        </div>
+
+        <div class="person-field-group">
+          <label for="id_date_of_birth" class="person-field-label">Date of Birth</label>
+          <input type="date" name="date_of_birth" id="id_date_of_birth" class="person-field-input">
+        </div>
+      </div>
+
+      <div class="person-add-section">
+        <div class="person-field-group full-width">
+          <label for="id_bio" class="person-field-label">Bio</label>
+          <textarea name="bio" id="id_bio" rows="6" class="person-field-textarea"></textarea>
+        </div>
+      </div>
+
+      <div class="person-add-section">
+        <div class="person-field-group full-width">
+          <label for="id_photo" class="person-field-label">Photo</label>
+          <input type="file" name="photo" id="id_photo" accept="image/*" class="person-field-file">
+          <small class="person-field-hint">Upload a high-quality (JPG, PNG)</small>
+        </div>
+      </div>
+
+      <div class="person-add-actions">
+        <button type="submit" class="action-button primary">Add Actor</button>
+        <a href="{% url 'home' %}" class="action-button secondary">← Back to Collection</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
